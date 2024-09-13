@@ -22,6 +22,6 @@ app.use(cors(corsOptions));
 
 const user = require('./routes/user');
 
-app.use('/api/user', user);
+app.use('/api/users', user);
 
 module.exports = app;

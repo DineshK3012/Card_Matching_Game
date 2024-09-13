@@ -124,7 +124,7 @@ exports.getUser = async (req, res) => {
         // Find the user by ID
         if (!user) return res.status(404).json({ msg: 'User not found' });
 
-        res.json({ username: user.username, email: user.email, bestScore: user.bestScore });
+        res.json({ userId: user._id, username: user.username, email: user.email, bestScore: user.bestScore });
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
@@ -150,7 +150,7 @@ exports.getScores = async (req, res) => {
         const user = req.user;
         if (!user) return res.status(404).json({ msg: 'User not found' });
 
-        res.json({ username: user.username, pastScores: user.pastScores });
+        res.json({ username: user.username, pastScores: user.pastScores.reverse() });
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }

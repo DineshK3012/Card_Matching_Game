@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import useGameStats from '../hooks/useGameStats';
+import { authAtom } from '../recoil/authAtom'; // Assuming you store the authenticated user details in authAtom
 import { getPokemonGrid } from '../../public/pokemon';
-import '../flip.css'; // Import custom CSS
+import '../flip.css';
+import useAuth from "../hooks/useAuth.js"; // Import custom CSS
 
 const PokemonGame = ({ gameSize, highestScore, onGameOver }) => {
     const [pokemonGrid, setPokemonGrid] = useState([]);
@@ -11,6 +15,9 @@ const PokemonGame = ({ gameSize, highestScore, onGameOver }) => {
     const [moves, setMoves] = useState(0);
     const [isGameComplete, setIsGameComplete] = useState(false);
     const [isNewHighScore, setIsNewHighScore] = useState(false);
+    const [auth, setAuth] = useRecoilState(authAtom);
+    const {loadCurrentUser} = useAuth();
+    const { updateScore} = useGameStats();
 
     useEffect(() => {
         const grid = getPokemonGrid(gameSize);
@@ -36,11 +43,17 @@ const PokemonGame = ({ gameSize, highestScore, onGameOver }) => {
                         index === firstCard.index || index === secondCard.index ? false : flip
                     )
                 );
+
+                // Check if all cards are flipped
                 if (!flippedStatus.some((status) => status)) {
                     setIsGameComplete(true);
+
+                    // Check for new high score
                     if (moves < highestScore) {
                         setIsNewHighScore(true);
                     }
+
+                    handleScoreUpdate(moves);
                 }
             } else {
                 setTimeout(() => {
@@ -58,6 +71,17 @@ const PokemonGame = ({ gameSize, highestScore, onGameOver }) => {
             }, 500);
         }
     }, [selectedCards]);
+
+    const handleScoreUpdate = async (moves) => {
+        if (auth.isAuthenticated) {
+            try{
+                await updateScore(moves)
+                await loadCurrentUser();
+            }catch (e) {
+                console.log(e);
+            }
+        }
+    };
 
     const handleFlip = (index) => {
         if (!isFlippingAllowed || !canFlip || selectedCards.some((card) => card.index === index)) return;
@@ -94,7 +118,7 @@ const PokemonGame = ({ gameSize, highestScore, onGameOver }) => {
         <div className="flex flex-col justify-center items-center min-h-screen bg-blue-100">
             <div className="flex justify-between items-center w-full max-w-4xl mb-6 px-4">
                 <div className="text-2xl font-bold text-gray-700">Moves: {moves}</div>
-                <div className="text-2xl font-bold text-gray-700">High Score: {highestScore}</div>
+                <div className="text-2xl font-bold text-gray-700">Best Score: {highestScore}</div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-6">
