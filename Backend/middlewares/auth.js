@@ -9,17 +9,17 @@ exports.isAuthenticated = async (req, res, next) => {
             return res.status(401).json({
                 success: false,
                 message: "Please login first"
-            })
+            });
         }
 
         const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-        req.user = await User.findById(decoded._id);
+        req.user = await User.findById(decoded._id).select("_id username email bestScore");
 
         next();
     } catch (error) {
         res.status(500).json({
             success: false,
             message: error.message
-        })
+        });
     }
-}
+};

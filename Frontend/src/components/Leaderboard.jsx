@@ -1,3 +1,6 @@
+"use client";
+
+import { Table } from "flowbite-react";
 import React, { useEffect } from 'react';
 import useGameStats from '../hooks/useGameStats';
 
@@ -17,16 +20,34 @@ const Leaderboard = () => {
                 {leaderboard.length === 0 ? (
                     <p className="text-center text-gray-600">No leaderboard data available yet.</p>
                 ) : (
-                    <ul className="list-none">
-                        {leaderboard.map((user, index) => (
-                            <li
-                                key={index}
-                                className="py-2 px-4 border-b border-gray-200 last:border-b-0"
-                            >
-                                <span className="font-semibold">{index + 1}.</span> {user.username} - {user.bestScore} moves
-                            </li>
-                        ))}
-                    </ul>
+                    // <ul className="list-none">
+                    //     {leaderboard.map((user, index) => (
+                    //         <li
+                    //             key={index}
+                    //             className="py-2 px-4 border-b border-gray-200 last:border-b-0"
+                    //         >
+                    //             <span className="font-semibold">{index + 1}.</span> {user.username} - {user.bestScore} moves
+                    //         </li>
+                    //     ))}
+                    // </ul>
+                    <div className="overflow-x-auto">
+                        <Table>
+                            <Table.Head>
+                                <Table.HeadCell>S. No.</Table.HeadCell>
+                                <Table.HeadCell>Username</Table.HeadCell>
+                                <Table.HeadCell>Best Score</Table.HeadCell>
+                            </Table.Head>
+                            <Table.Body className="divide-y">
+                                {leaderboard.map((user, index) => (
+                                    <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                                        <Table.Cell>{index + 1}</Table.Cell>
+                                        <Table.Cell>{user.username}</Table.Cell>
+                                        <Table.Cell>{user.bestScore}</Table.Cell>
+                                    </Table.Row>
+                                ))}
+                            </Table.Body>
+                        </Table>
+                    </div>
                 )}
             </div>
         </div>

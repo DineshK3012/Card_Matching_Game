@@ -116,7 +116,7 @@ const PokemonGame = ({ gameSize, highestScore, onGameOver }) => {
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen bg-blue-100">
-            <div className="flex justify-between items-center w-full max-w-4xl mb-6 px-4">
+            <div className="flex justify-between items-center w-full max-w-4xl mb-2 px-4">
                 <div className="text-2xl font-bold text-gray-700">Moves: {moves}</div>
                 <div className="text-2xl font-bold text-gray-700">Best Score: {highestScore}</div>
             </div>

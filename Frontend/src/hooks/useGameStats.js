@@ -40,7 +40,7 @@ const useGameStats = () => {
         setLoading(true);
         try {
             const data = await updateUserScore({score});
-            toast.success('Score updated successfully!');
+            // toast.success('Score updated successfully!');
             return data;
         } catch (error) {
             toast.error(`Failed to update score: ${error}`);

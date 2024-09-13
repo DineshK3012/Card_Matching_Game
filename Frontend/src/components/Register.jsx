@@ -22,21 +22,6 @@ const Register = () => {
             <h2 className="text-2xl text-center font-semibold text-gray-800 mb-4">Register</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
-                        Email
-                    </label>
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Enter your email"
-                        className="w-full p-3 border-gray-200 rounded-lg outline-none"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
                     <label htmlFor="username" className="block text-gray-700 font-medium mb-2">
                         Username
                     </label>
@@ -47,6 +32,21 @@ const Register = () => {
                         value={formData.username}
                         onChange={handleChange}
                         placeholder="Enter your username"
+                        className="w-full p-3 border-gray-200 rounded-lg outline-none"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="Enter your email"
                         className="w-full p-3 border-gray-200 rounded-lg outline-none"
                         required
                     />

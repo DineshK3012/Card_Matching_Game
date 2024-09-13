@@ -22,7 +22,7 @@ const GamePage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-blue-100 flex flex-col items-center justify-center py-6 px-4">
+        <div className="min-h-screen bg-blue-100 py-6 px-4 w-fit m-auto">
             {!playGame ? (
                 <div className="flex flex-col items-center justify-center bg-white p-6 rounded-lg shadow-lg">
                     <p className="text-xl font-semibold mb-4">Your Best Score: {`${highestScore ? highestScore + " moves": "Not Played Yet"}`}</p>

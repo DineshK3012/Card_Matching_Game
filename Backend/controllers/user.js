@@ -120,8 +120,6 @@ exports.logoutUser = async (req, res) => {
 exports.getUser = async (req, res) => {
     try {
         const user = req.user;
-
-        // Find the user by ID
         if (!user) return res.status(404).json({ msg: 'User not found' });
 
         res.json({ userId: user._id, username: user.username, email: user.email, bestScore: user.bestScore });
@@ -132,7 +130,7 @@ exports.getUser = async (req, res) => {
 
 exports.getLeaderBoard = async (req, res) => {
     try {
-        // Find top 10 users sorted by bestScore (lowest is better)
+        // Find top 10 users sorted by bestScore/moves (lowest is better)
         const leaderboard = await User.find({ bestScore: { $ne: null } })
             .sort({ bestScore: 1 })  // Sort by bestScore ascending (fewer moves first)
             .limit(10)
@@ -147,32 +145,49 @@ exports.getLeaderBoard = async (req, res) => {
 
 exports.getScores = async (req, res) => {
     try {
-        const user = req.user;
-        if (!user) return res.status(404).json({ msg: 'User not found' });
+        const userId = req.user._id;
 
-        res.json({ username: user.username, pastScores: user.pastScores.reverse() });
+        // Fetch only the pastScores with the last 10 scores
+        const user = await User.findById(userId, {
+            pastScores: { $slice: -10 } // Retrieve only the last 10 scores
+        });
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Reverse the pastScores to show the most recent first
+        res.json({ pastScores: user.pastScores.reverse() });
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
-}
+};
 
 exports.updateScore = async (req, res) => {
     try {
-        const { score } = req.body;
-        const  user = req.user;
-        if (!user) return res.status(404).json({ msg: 'User not found' });
+        const { score } = req.body; // Get the new score from the request body
+        const userId = req.user._id; // Get the user ID from req.user
+
+        // Fetch the user document including pastScores
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
 
         // Update the bestScore if the new score is better (lower)
         if (user.bestScore === null || score < user.bestScore) {
             user.bestScore = score;
         }
 
-        // Add the new score to pastScores array
-        user.pastScores.push({ score });
+        // Add the new score to the pastScores array
+        user.pastScores.push({ score});
 
+        // Save the updated user data
         await user.save();
-        res.json({ msg: 'Score updated', bestScore: user.bestScore, pastScores: user.pastScores });
+
+        // Respond with success message and updated bestScore
+        res.json({ msg: 'Score updated', bestScore: user.bestScore });
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
-}
+};
