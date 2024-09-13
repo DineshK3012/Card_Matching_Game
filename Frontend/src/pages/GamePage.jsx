@@ -37,7 +37,7 @@ const GamePage = () => {
                     </div>
                 </div>
             ) : (
-                <PokemonGame gameSize={2} highestScore={highestScore} onGameOver={handleGameOver} />
+                <PokemonGame gameSize={4} highestScore={highestScore} onGameOver={handleGameOver} />
             )}
         </div>
     );
