@@ -6,6 +6,10 @@ This is a Pokemon-themed card matching game where users can test their memory by
 
 You can check out the live version of the app [here](https://card-matching-game-psi.vercel.app/).
 
+## Test Login Credentials
+- **Email**: root@gmail.com
+- **Password**: admin
+
 ## Features
 
 - **Card Matching Game**: Flip cards to match pairs, and complete the game in the fewest moves possible.
@@ -118,7 +122,3 @@ You can check out the live version of the app [here](https://card-matching-game-
 - **POST /api/users/update-score**: Update the user's score after the game.
 - **GET /api/users/scores**: Get the user's past scores.
 - **GET /api/users/leaderboard**: Get the top players based on their best scores.
-
-## Test Login Credentials
-- **Email**: root@gmail.com
-- **Password**: admin
